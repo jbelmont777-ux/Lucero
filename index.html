@@ -121,7 +121,30 @@
         #noBtn {
             background: transparent; color: #555;
             border: 1px solid #222; padding: 10px 20px;
-            cursor: pointer; transition: opacity 0.3s;
+            cursor: pointer; transition: 0.3s;
+        }
+
+        /* ESTILO DEL MENSAJE DE ALERTA TRISTE */
+        .alerta-triste {
+            display: none;
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(10, 10, 10, 0.95);
+            padding: 40px;
+            border: 2px solid #ff0055;
+            border-radius: 15px;
+            z-index: 5000;
+            text-align: center;
+            box-shadow: 0 0 50px #ff0055;
+            width: 80%;
+            max-width: 400px;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            from { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+            to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
         }
 
         .rose-petal {
@@ -146,6 +169,12 @@
 
     <div id="overlay">
         <button id="startBtn" onclick="iniciar()">ENTRAR AL ECLIPSE</button>
+    </div>
+
+    <div id="mensajeTriste" class="alerta-triste">
+        <h2 style="color: #ff0055; font-family: 'Metal Mania';">NETA LE PICASTE QUE NO AMOR</h2>
+        <p style="font-size: 3rem;">😢😭💔🥺</p>
+        <button onclick="cerrarAlerta()" style="background: none; border: 1px solid var(--dorado-viejo); color: #fff; cursor: pointer; padding: 10px 20px; font-family: 'IM Fell DW Pica SC';">Lo siento, elegiré Sí</button>
     </div>
 
     <div class="player-info">
@@ -178,7 +207,7 @@
 
         <div class="buttons-wrapper">
             <button class="btn-si" id="siBtn" onclick="aceptar()">SÍ, ACEPTO</button>
-            <button id="noBtn" onclick="eliminarNo()" onmouseover="crecerSi()">No</button>
+            <button id="noBtn" onclick="mostrarAlerta()">No</button>
         </div>
     </div>
 
@@ -191,7 +220,6 @@
 
     <script>
         const music = document.getElementById("bgMusic");
-        let escalaSi = 1;
 
         function iniciar() {
             music.play();
@@ -204,23 +232,18 @@
             else { music.pause(); document.getElementById("musicToggle").innerText = "▶️"; }
         }
 
-        function crecerSi() {
-            const siBtn = document.getElementById("siBtn");
-            escalaSi += 0.2;
-            siBtn.style.transform = `scale(${escalaSi})`;
+        function mostrarAlerta() {
+            document.getElementById("mensajeTriste").style.display = "block";
         }
 
-        function eliminarNo() {
-            document.getElementById("noBtn").style.display = "none";
+        function cerrarAlerta() {
+            document.getElementById("mensajeTriste").style.display = "none";
         }
 
         function aceptar() { document.getElementById("success-screen").style.display = "flex"; }
         
         function regresar() { 
             document.getElementById("success-screen").style.display = "none"; 
-            escalaSi = 1; 
-            document.getElementById("siBtn").style.transform = `scale(1)`;
-            document.getElementById("noBtn").style.display = "inline-block";
         }
 
         function crearPetalo() {
